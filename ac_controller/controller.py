@@ -2,31 +2,37 @@ import asyncio
 from kasa import SmartPlug
 from dotenv import load_dotenv
 import os
+from ac_controller.async_utils import async_to_sync
+from time import sleep
 
 load_dotenv()
 
 
-def hours_to_seconds(seconds):
-    return seconds * 60 * 60
+def sleep_hours(seconds):
+    sleep(seconds * 60 * 60)
 
 
-async def control_loop(smart_plug):
-    while True:
-        await smart_plug.turn_on()
-        print("AC turned on")
-        await asyncio.sleep(hours_to_seconds(4))
-        await smart_plug.turn_off()
-        print("AC turned off")
-        await asyncio.sleep(hours_to_seconds(0.5))
+@async_to_sync
+async def turn_off_ac(smart_plug):
+    await smart_plug.turn_off()
+    print("AC turned off")
+
+
+@async_to_sync
+async def turn_on_ac(smart_plug):
+    await smart_plug.turn_on()
+    print("AC turned on")
 
 
 def run():
     smart_plug = SmartPlug(os.environ.get("PLUG_IP"))
     print("Connected to smart plug")
-    print("Starting control loop")
 
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(control_loop(smart_plug))
+    while True:
+        turn_on_ac(smart_plug)
+        sleep_hours(4)
+        turn_off_ac(smart_plug)
+        sleep_hours(0.5)
 
 
 if __name__ == "__main__":
