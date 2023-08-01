@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  ac-controller:
+    container_name: ac-controller
+    restart: unless-stopped
+    build: 
+      dockerfile: ./Dockerfile
