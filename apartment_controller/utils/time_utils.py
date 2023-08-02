@@ -10,19 +10,35 @@ utc = pytz.UTC
 eastern_tz = pytz.timezone("US/Eastern")
 
 
-def get_sunrise_sunset():
-    location = LocationInfo(latitude=config.latitude, longitude=config.longitude)
+def eastern_day_seconds(input_datetime):
+    eastern_time = input_datetime.astimezone(eastern_tz)
+    midnight = eastern_time.replace(hour=0, minute=0, second=0, microsecond=0)
+    return (eastern_time - midnight).seconds
+
+
+def get_sunrise_sunset_seconds():
+    location = LocationInfo(
+        "New York",
+        "USA",
+        latitude=config.latitude,
+        longitude=config.longitude,
+        timezone=eastern_tz.zone,
+    )
     LocationInfo()
 
     today = date.today()
     s = sun(location.observer, date=today)
 
-    return s["sunrise"], s["sunset"]
+    # get sunrise/sunset relative to eastern day
+    sunrise_seconds = eastern_day_seconds(s["sunrise"])
+    sunset_seconds = eastern_day_seconds(s["sunset"])
+
+    return sunrise_seconds, sunset_seconds
 
 
 def is_dark_out():
-    sunrise, sunset = get_sunrise_sunset()
-    current_time = datetime.now(utc)
+    sunrise, sunset = get_sunrise_sunset_seconds()
+    current_time = eastern_day_seconds(datetime.now(utc))
     return current_time > sunset or current_time < sunrise
 
 
@@ -40,3 +56,8 @@ def sleep_hours(seconds):
 
 def sleep_minutes(seconds):
     sleep(seconds * 60)
+
+
+if __name__ == "__main__":
+    print(is_dark_out())
+    # print(seconds_since_start_of_day(datetime.now()))
