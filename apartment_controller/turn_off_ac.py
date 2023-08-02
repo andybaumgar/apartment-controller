@@ -1,7 +1,7 @@
 from kasa import SmartPlug
 from dotenv import load_dotenv
 import os
-from apartment_controller.async_utils import async_to_sync
+from apartment_controller.utils.async_utils import async_to_sync
 
 load_dotenv()
 

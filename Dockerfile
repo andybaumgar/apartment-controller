@@ -13,4 +13,4 @@ COPY . .
 # install the logger with pip
 RUN pip install -e .
 
-CMD python -u ac_controller
+CMD python -u apartment_controller
