@@ -1,8 +1,7 @@
-import asyncio
 from kasa import SmartPlug
 from dotenv import load_dotenv
 import os
-from ac_controller.async_utils import async_to_sync
+from apartment_controller.async_utils import async_to_sync
 from time import sleep
 
 load_dotenv()
