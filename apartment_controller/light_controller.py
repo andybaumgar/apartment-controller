@@ -31,15 +31,16 @@ async def turn_off_lights(smart_plugs):
 def run(lights_on=False):
     print("Running light controller")
     smart_plugs = [SmartPlug(ip) for ip in config.light_plug_ips]
+    is_dark_out = is_dark_out(sunset_offset=config.sunset_offset)
 
     while True:
         # if not lights_on and is_dark_out() and not is_asleep():
-        if is_dark_out() and not is_asleep():
+        if is_dark_out and not is_asleep():
             turn_on_lights(smart_plugs)
             lights_on = True
             print("starting sleep")
         # elif lights_on and (not is_dark_out() or is_asleep()):
-        elif not is_dark_out() or is_asleep():
+        elif not is_dark_out or is_asleep():
             turn_off_lights(smart_plugs)
             lights_on = False
             print("starting sleep")
