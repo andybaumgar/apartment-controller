@@ -25,7 +25,7 @@ async def turn_on_ac(smart_plug):
 
 
 def run():
-    smart_plug = SmartPlug(os.environ.get("PLUG_IP"))
+    smart_plug = SmartPlug(os.environ.get("AC_PLUG_IP"))
     print("Connected to smart plug")
 
     while True:
