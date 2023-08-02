@@ -36,10 +36,10 @@ def get_sunrise_sunset_seconds():
     return sunrise_seconds, sunset_seconds
 
 
-def is_dark_out():
+def is_dark_out(sunset_offset=0):
     sunrise, sunset = get_sunrise_sunset_seconds()
     current_time = eastern_day_seconds(datetime.now(utc))
-    return current_time > sunset or current_time < sunrise
+    return current_time > sunset - config.sunset_offset * 3600 or current_time < sunrise
 
 
 def is_asleep():

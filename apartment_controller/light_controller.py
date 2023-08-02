@@ -62,6 +62,6 @@ if __name__ == "__main__":
     # run(lights_on=True)
     # run()
 
-    turn_off_lights(smart_plugs)
-    # turn_on_lights(smart_plugs)
+    # turn_off_lights(smart_plugs)
+    turn_on_lights(smart_plugs)
     # strobe(smart_plugs)
