@@ -27,12 +27,12 @@ def run():
     print("Connected to smart plug")
 
     while True:
+        turn_off_ac(smart_plug)
+        sleep_hours(0.75)
+        print("starting sleep")
         turn_on_ac(smart_plug)
         print("starting sleep")
         sleep_hours(4)
-        turn_off_ac(smart_plug)
-        sleep_hours(0.5)
-        print("starting sleep")
 
 
 if __name__ == "__main__":
