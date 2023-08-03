@@ -39,11 +39,17 @@ def get_sunrise_sunset_seconds():
 def is_dark_out(sunset_offset=0):
     sunrise, sunset = get_sunrise_sunset_seconds()
     current_time = eastern_day_seconds(datetime.now(utc))
+    print(f"current_time: {current_time}")
+    print(f"sunset + config.sunset_offset: {sunset + config.sunset_offset}")
+    print(f"sunrise: {sunrise}")
     return current_time > sunset + config.sunset_offset * 3600 or current_time < sunrise
 
 
 def is_asleep():
     current_time_hour = datetime.now(eastern_tz).hour
+    print(f"current_time_hour: {current_time_hour}")
+    print(f"config.bed_time_hour: {config.bed_time_hour}")
+    print(f"config.wake_up_hour: {config.wake_up_hour}")
     return (
         current_time_hour >= config.bed_time_hour
         and current_time_hour < config.wake_up_hour
@@ -59,5 +65,6 @@ def sleep_minutes(seconds):
 
 
 if __name__ == "__main__":
-    print(is_dark_out(sunset_offset=config.sunset_offset))
+    # print(is_dark_out(sunset_offset=config.sunset_offset))
+    print(is_asleep())
     # print(seconds_since_start_of_day(datetime.now()))
