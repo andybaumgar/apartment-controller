@@ -2,7 +2,12 @@ from kasa import SmartPlug
 from apartment_controller.utils.async_utils import async_to_sync
 from time import sleep
 import asyncio
-from apartment_controller.utils.time_utils import sleep_minutes, is_asleep, is_dark_out
+from apartment_controller.utils.time_utils import (
+    sleep_minutes,
+    is_asleep,
+    is_dark_out,
+    is_after_dusk,
+)
 from typing import List
 from apartment_controller import config
 
@@ -31,22 +36,19 @@ async def turn_off_lights(smart_plugs):
 def run(lights_on=False):
     print("Running light controller")
     smart_plugs = [SmartPlug(ip) for ip in config.light_plug_ips]
-    is_after_dusk = is_dark_out(sunset_offset=config.sunset_offset)
 
     while True:
-        # if not lights_on and is_dark_out() and not is_asleep():
-        if is_after_dusk and not is_asleep():
+        print(f"is_after_dusk: {is_after_dusk}")
+        if (not lights_on) and (not is_asleep()) and is_after_dusk():
             turn_on_lights(smart_plugs)
             lights_on = True
             print("starting sleep")
-        # elif lights_on and (not is_dark_out() or is_asleep()):
-        elif not is_after_dusk or is_asleep():
+        elif lights_on and is_asleep():
             turn_off_lights(smart_plugs)
             lights_on = False
             print("starting sleep")
 
         sleep_minutes(1)
-        # sleep(5)
 
 
 def strobe(smart_plugs, interval=0.25):

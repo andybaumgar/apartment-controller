@@ -36,6 +36,10 @@ def get_sunrise_sunset_seconds():
     return sunrise_seconds, sunset_seconds
 
 
+def is_after_dusk():
+    is_dark_out(sunset_offset=config.sunset_offset)
+
+
 def is_dark_out(sunset_offset=0):
     sunrise, sunset = get_sunrise_sunset_seconds()
     current_time = eastern_day_seconds(datetime.now(utc))
