@@ -38,7 +38,7 @@ def run(lights_on=False):
     smart_plugs = [SmartPlug(ip) for ip in config.light_plug_ips]
 
     while True:
-        print(f"is_after_dusk: {is_after_dusk}")
+        print(f"is_after_dusk: {is_after_dusk()}")
         if (not lights_on) and (not is_asleep()) and is_after_dusk():
             turn_on_lights(smart_plugs)
             lights_on = True

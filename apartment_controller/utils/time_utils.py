@@ -7,22 +7,20 @@ from time import sleep
 import pytz
 
 utc = pytz.UTC
-eastern_tz = pytz.timezone("US/Eastern")
+local_tz = pytz.timezone(config.local_tz_name)
 
 
-def eastern_day_seconds(input_datetime):
-    eastern_time = input_datetime.astimezone(eastern_tz)
-    midnight = eastern_time.replace(hour=0, minute=0, second=0, microsecond=0)
-    return (eastern_time - midnight).seconds
+def get_seconds_since_midnight(input_datetime, tz):
+    local_time = input_datetime.astimezone(tz)
+    midnight = local_time.replace(hour=0, minute=0, second=0, microsecond=0)
+    return (local_time - midnight).seconds
 
 
-def get_sunrise_sunset_seconds():
+def get_sunrise_sunset_seconds_since_midnight(tz):
     location = LocationInfo(
-        "New York",
-        "USA",
         latitude=config.latitude,
         longitude=config.longitude,
-        timezone=eastern_tz.zone,
+        timezone=tz.zone,
     )
     LocationInfo()
 
@@ -30,27 +28,26 @@ def get_sunrise_sunset_seconds():
     s = sun(location.observer, date=today)
 
     # get sunrise/sunset relative to eastern day
-    sunrise_seconds = eastern_day_seconds(s["sunrise"])
-    sunset_seconds = eastern_day_seconds(s["sunset"])
+    sunrise_seconds = get_seconds_since_midnight(s["sunrise"], local_tz)
+    sunset_seconds = get_seconds_since_midnight(s["sunset"], local_tz)
 
     return sunrise_seconds, sunset_seconds
 
 
 def is_after_dusk():
-    is_dark_out(sunset_offset=config.sunset_offset)
+    return is_dark_out(sunset_offset=config.sunset_offset)
 
 
 def is_dark_out(sunset_offset=0):
-    sunrise, sunset = get_sunrise_sunset_seconds()
-    current_time = eastern_day_seconds(datetime.now(utc))
+    sunrise, sunset = get_sunrise_sunset_seconds_since_midnight(local_tz)
+    current_time = get_seconds_since_midnight(datetime.now(utc), local_tz)
     print(f"current_time: {current_time}")
-    print(f"sunset + config.sunset_offset: {sunset + config.sunset_offset}")
     print(f"sunrise: {sunrise}")
-    return current_time > sunset + config.sunset_offset * 3600 or current_time < sunrise
+    return current_time > sunset + sunset_offset * 3600 or current_time < sunrise
 
 
 def is_asleep():
-    current_time_hour = datetime.now(eastern_tz).hour
+    current_time_hour = datetime.now(local_tz).hour
     print(f"current_time_hour: {current_time_hour}")
     print(f"config.bed_time_hour: {config.bed_time_hour}")
     print(f"config.wake_up_hour: {config.wake_up_hour}")
