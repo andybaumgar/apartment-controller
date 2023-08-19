@@ -10,5 +10,6 @@ bed_time_hour = 2
 wake_up_hour = 8
 sunset_offset = -1.5
 local_tz_name = "US/Eastern"
-target_temp = 75
+waking_target_temperature = 76
+sleep_target_temperature = 74
 temp_offset = -3
