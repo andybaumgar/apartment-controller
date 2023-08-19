@@ -2,3 +2,4 @@ python-dotenv
 python-kasa
 astral
 pytz
+influxdb
