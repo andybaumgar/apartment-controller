@@ -42,7 +42,6 @@ def needs_heating(temperature):
 
 
 def run():
-    turn_on_ac(smart_plugs)
     mode = Mode.RUN
     ran_hours = 0
     slept_hours = 0
@@ -50,6 +49,7 @@ def run():
     ac_smart_plug = SmartPlug(config.ac_plug_ip)
     fan_smart_plug = SmartPlug(config.ac_fan_ip)
     smart_plugs = [ac_smart_plug, fan_smart_plug]
+    turn_on_ac(smart_plugs)
     print("Connected to smart plug")
 
     while True:

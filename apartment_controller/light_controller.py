@@ -1,15 +1,17 @@
-from kasa import SmartPlug
-from apartment_controller.utils.async_utils import async_to_sync
-from time import sleep
 import asyncio
+from time import sleep
+from typing import List
+
+from kasa import SmartPlug
+
+from apartment_controller import config
+from apartment_controller.utils.async_utils import async_to_sync
 from apartment_controller.utils.time_utils import (
-    sleep_minutes,
+    is_after_dusk,
     is_asleep,
     is_dark_out,
-    is_after_dusk,
+    sleep_minutes,
 )
-from typing import List
-from apartment_controller import config
 
 
 @async_to_sync
@@ -42,11 +44,9 @@ def run(lights_on=False):
         if (not lights_on) and (not is_asleep()) and is_after_dusk():
             turn_on_lights(smart_plugs)
             lights_on = True
-            print("starting sleep")
         elif lights_on and is_asleep():
             turn_off_lights(smart_plugs)
             lights_on = False
-            print("starting sleep")
 
         sleep_minutes(1)
 
