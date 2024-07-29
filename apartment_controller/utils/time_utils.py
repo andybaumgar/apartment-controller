@@ -46,7 +46,7 @@ def is_dark_out(sunset_offset=0):
     return current_time > sunset + sunset_offset * 3600 or current_time < sunrise
 
 
-def is_asleep():
+def andy_is_asleep():
     current_time_hour = datetime.now(local_tz).hour
     print(f"current_time_hour: {current_time_hour}")
     print(f"config.bed_time_hour: {config.bed_time_hour}")
@@ -67,5 +67,5 @@ def sleep_minutes(seconds):
 
 if __name__ == "__main__":
     # print(is_dark_out(sunset_offset=config.sunset_offset))
-    print(is_asleep())
+    print(andy_is_asleep())
     # print(seconds_since_start_of_day(datetime.now()))

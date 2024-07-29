@@ -9,7 +9,7 @@ from apartment_controller import config
 from apartment_controller.config import cycle_time_hours
 from apartment_controller.utils.async_utils import async_to_sync
 from apartment_controller.utils.temp_utils import get_current_temperature
-from apartment_controller.utils.time_utils import is_asleep, sleep_hours
+from apartment_controller.utils.time_utils import andy_is_asleep, sleep_hours
 
 load_dotenv()
 
@@ -34,7 +34,7 @@ class Mode(Enum):
 
 
 def get_target_temperature():
-    if is_asleep():
+    if andy_is_asleep():
         return config.sleep_target_temperature
     else:
         return config.waking_target_temperature
@@ -90,12 +90,13 @@ def run():
 
 
 if __name__ == "__main__":
-    # ac_smart_plug = SmartPlug(config.ac_plug_ip)
-    # fan_smart_plug = SmartPlug(config.ac_fan_ip)
-    # smart_plugs = [ac_smart_plug, fan_smart_plug]
+    ac_smart_plug = SmartPlug(config.ac_plug_ip)
+    fan_smart_plug = SmartPlug(config.ac_fan_ip)
+    smart_plugs = [ac_smart_plug, fan_smart_plug]
     # # run()
-    # turn_off_ac([ac_smart_plug, fan_smart_plug])
+    turn_off_ac([ac_smart_plug, fan_smart_plug])
+    # turn_on_ac(smart_plugs)
     # temperature = get_current_temperature()
-    temperature = 74
-    print(needs_cooling(temperature))
-    print(needs_heating(temperature))
+    # temperature = 74
+    # print(needs_cooling(temperature))
+    # print(needs_heating(temperature))
