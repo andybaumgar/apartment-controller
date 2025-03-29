@@ -9,8 +9,8 @@ from apartment_controller.utils.async_utils import async_to_sync
 from apartment_controller.utils.time_utils import (
     is_after_dusk,
     andy_is_asleep,
-    is_dark_out,
     sleep_minutes,
+    should_lights_dim,
 )
 
 
@@ -35,7 +35,7 @@ async def turn_off_lights(smart_plugs):
     print("Lights turned off")
 
 
-def run(lights_on=False):
+def run(lights_on=False, main_lights_on=False):
     print("Running light controller")
     smart_plugs = [SmartPlug(ip) for ip in config.light_plug_ips]
 
@@ -44,9 +44,14 @@ def run(lights_on=False):
         if (not lights_on) and (not andy_is_asleep()) and is_after_dusk():
             turn_on_lights(smart_plugs)
             lights_on = True
+            main_lights_on = True
         elif lights_on and andy_is_asleep():
             turn_off_lights(smart_plugs)
             lights_on = False
+        if should_lights_dim() and main_lights_on:
+            main_lights = [SmartPlug(ip) for ip in config.main_lights]
+            turn_off_lights(main_lights)
+            main_lights_on = False
 
         sleep_minutes(1)
 

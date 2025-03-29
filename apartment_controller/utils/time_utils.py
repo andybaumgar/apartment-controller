@@ -57,6 +57,11 @@ def andy_is_asleep():
     )
 
 
+def should_lights_dim():
+    current_time_hour = datetime.now(local_tz).hour
+    return current_time_hour >= config.should_lights_dim_hour
+
+
 def sleep_hours(seconds):
     sleep(seconds * 60 * 60)
 
