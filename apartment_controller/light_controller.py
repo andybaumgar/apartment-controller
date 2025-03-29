@@ -36,6 +36,7 @@ async def turn_off_lights(smart_plugs):
 
 
 def run(lights_on=False, main_lights_on=False):
+    print("version 1.1")
     print("Running light controller")
     smart_plugs = [SmartPlug(ip) for ip in config.light_plug_ips]
 
