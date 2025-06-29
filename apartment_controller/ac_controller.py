@@ -94,8 +94,8 @@ if __name__ == "__main__":
     fan_smart_plug = SmartPlug(config.ac_fan_ip)
     smart_plugs = [ac_smart_plug, fan_smart_plug]
     # # run()
-    turn_off_ac([ac_smart_plug, fan_smart_plug])
-    # turn_on_ac(smart_plugs)
+    # turn_off_ac([ac_smart_plug, fan_smart_plug])
+    turn_on_ac(smart_plugs)
     # temperature = get_current_temperature()
     # temperature = 74
     # print(needs_cooling(temperature))
