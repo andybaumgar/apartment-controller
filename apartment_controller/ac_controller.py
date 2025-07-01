@@ -45,6 +45,8 @@ def needs_cooling(temperature):
 
 
 def needs_heating(temperature):
+    print("temperature: ", temperature)
+    print("get_target_temperature(): ", get_target_temperature())
     return temperature < (get_target_temperature() - 1)
 
 
